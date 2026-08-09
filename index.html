@@ -17,7 +17,7 @@
     <header class="p-4 bg-slate-800/80 backdrop-blur border-b border-slate-700 sticky top-0 z-50 flex justify-between items-center">
         <div>
             <h1 class="font-bold text-lg text-cyan-400 flex items-center gap-1">
-                🎣 Angler's Tidal & Marine Catch Companion
+                🎣 Angler's Tidal & Marine Companion
             </h1>
             <p id="location-text" class="text-xs text-slate-400">GPS: 1.35°, 103.82°</p>
         </div>
@@ -53,41 +53,64 @@
             Connecting...
         </div>
 
-        <!-- High & Low Tide Summary -->
-        <div class="grid grid-cols-2 gap-3">
-            <div class="bg-slate-800/60 border border-slate-700/60 p-3 rounded-xl">
-                <span class="text-xs text-slate-400 font-medium">🌊 High Tide</span>
-                <div id="high-tide-val" class="text-lg font-bold text-cyan-300 mt-1">-- m</div>
-                <div id="high-tide-time" class="text-xs text-slate-400 mt-0.5">Peak: --:--</div>
+        <!-- Tidal Snapshot Section -->
+        <div class="bg-slate-800/80 border border-slate-700 p-3.5 rounded-xl space-y-3">
+            <div class="flex justify-between items-center border-b border-slate-700/60 pb-2">
+                <h2 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                    🌊 Tidal Snapshot
+                </h2>
+                <span id="current-tide-phase" class="text-[10px] bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded-full border border-cyan-800">
+                    --
+                </span>
             </div>
-            <div class="bg-slate-800/60 border border-slate-700/60 p-3 rounded-xl">
-                <span class="text-xs text-slate-400 font-medium">📉 Low Tide</span>
-                <div id="low-tide-val" class="text-lg font-bold text-amber-300 mt-1">-- m</div>
-                <div id="low-tide-time" class="text-xs text-slate-400 mt-0.5">Lowest: --:--</div>
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="bg-slate-900/80 border border-slate-700/60 p-2.5 rounded-lg">
+                    <span class="text-[10px] text-slate-400 uppercase font-semibold">Current Tide</span>
+                    <div id="current-tide-val" class="text-base font-bold text-slate-100 mt-1">-- m</div>
+                    <div id="tide-trend-text" class="text-[9px] text-cyan-400 mt-0.5">--</div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-700/60 p-2.5 rounded-lg">
+                    <span class="text-[10px] text-slate-400 uppercase font-semibold">High Tide Peak</span>
+                    <div id="high-tide-val" class="text-base font-bold text-cyan-300 mt-1">-- m</div>
+                    <div id="high-tide-time" class="text-[9px] text-slate-400 mt-0.5">Peak: --:--</div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-700/60 p-2.5 rounded-lg">
+                    <span class="text-[10px] text-slate-400 uppercase font-semibold">Low Tide Lowest</span>
+                    <div id="low-tide-val" class="text-base font-bold text-amber-300 mt-1">-- m</div>
+                    <div id="low-tide-time" class="text-[9px] text-slate-400 mt-0.5">Lowest: --:--</div>
+                </div>
             </div>
         </div>
 
-        <!-- Marine Weather, Wind & Water Temp Dashboard -->
-        <div class="grid grid-cols-4 gap-1.5 bg-slate-800/60 border border-slate-700/60 p-3 rounded-xl text-center">
-            <div>
-                <span class="text-[9px] text-slate-400 uppercase font-semibold">Wind</span>
-                <div id="current-wind-val" class="text-xs font-bold text-emerald-300 mt-0.5">-- km/h</div>
-                <div id="wind-dir-val" class="text-[9px] text-slate-400">--</div>
+        <!-- Wave & Marine Conditions Overview Section -->
+        <div class="bg-slate-800/80 border border-slate-700 p-3.5 rounded-xl space-y-3">
+            <div class="flex justify-between items-center border-b border-slate-700/60 pb-2">
+                <h2 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                    🏄 Wave & Marine Conditions Snapshot
+                </h2>
+                <span id="wave-trend-val" class="text-[10px] text-emerald-400 font-medium">--</span>
             </div>
-            <div>
-                <span class="text-[9px] text-slate-400 uppercase font-semibold">Wave Ht.</span>
-                <div id="current-wave-val" class="text-xs font-bold text-cyan-300 mt-0.5">-- m</div>
-                <div id="wave-trend-val" class="text-[9px] text-slate-400">--</div>
-            </div>
-            <div>
-                <span class="text-[9px] text-slate-400 uppercase font-semibold">Water Temp</span>
-                <div id="water-temp-val" class="text-xs font-bold text-orange-300 mt-0.5">-- °C</div>
-                <div class="text-[9px] text-slate-400">Surface</div>
-            </div>
-            <div>
-                <span class="text-[9px] text-slate-400 uppercase font-semibold">Barometer</span>
-                <div id="current-press-val" class="text-xs font-bold text-indigo-300 mt-0.5">-- hPa</div>
-                <div id="press-trend-val" class="text-[9px] text-slate-400">--</div>
+            <div class="grid grid-cols-4 gap-1.5 text-center">
+                <div class="bg-slate-900/80 border border-slate-700/60 p-2 rounded-lg">
+                    <span class="text-[9px] text-slate-400 uppercase font-semibold">Wave Ht.</span>
+                    <div id="current-wave-val" class="text-xs font-bold text-cyan-300 mt-0.5">-- m</div>
+                    <div id="max-wave-val" class="text-[9px] text-slate-400">Max: --m</div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-700/60 p-2 rounded-lg">
+                    <span class="text-[9px] text-slate-400 uppercase font-semibold">Wind</span>
+                    <div id="current-wind-val" class="text-xs font-bold text-emerald-300 mt-0.5">-- km/h</div>
+                    <div id="wind-dir-val" class="text-[9px] text-slate-400">--</div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-700/60 p-2 rounded-lg">
+                    <span class="text-[9px] text-slate-400 uppercase font-semibold">Water Temp</span>
+                    <div id="water-temp-val" class="text-xs font-bold text-orange-300 mt-0.5">-- °C</div>
+                    <div class="text-[9px] text-slate-400">Surface</div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-700/60 p-2 rounded-lg">
+                    <span class="text-[9px] text-slate-400 uppercase font-semibold">Barometer</span>
+                    <div id="current-press-val" class="text-xs font-bold text-indigo-300 mt-0.5">-- hPa</div>
+                    <div id="press-trend-val" class="text-[9px] text-slate-400">--</div>
+                </div>
             </div>
         </div>
 
@@ -110,39 +133,28 @@
         <!-- 24-Hour Wave Height Chart -->
         <div class="bg-slate-800/60 border border-slate-700/60 p-3 rounded-xl">
             <div class="flex justify-between items-center mb-2">
-                <span class="text-xs text-slate-400 font-medium">24-Hour Wave Height ($m$)</span>
+                <span class="text-xs text-slate-400 font-medium">24-Hour Wave Trend ($m$)</span>
                 <span id="canvas-time-indicator" class="text-[10px] text-cyan-400">00:00 - 23:00</span>
             </div>
             <canvas id="tideCanvas" width="350" height="120" class="w-full h-28 rounded-lg"></canvas>
         </div>
 
-        <!-- Local Catch Log Section -->
+        <!-- Seasonal Fish Species Information Guide -->
         <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-xl space-y-3">
-            <h2 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center justify-between">
-                <span>🎣 Catch Log History</span>
-                <span id="log-count" class="text-[10px] bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full">0 Entries</span>
-            </h2>
-
-            <!-- New Log Form -->
-            <div class="space-y-2 pt-1">
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" id="log-species" placeholder="Fish Species (e.g. Snapper)" 
-                        class="bg-slate-900 border border-slate-700 text-xs rounded-lg px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-cyan-500">
-                    <input type="text" id="log-size" placeholder="Size / Wt (e.g. 2.5 kg, 45cm)" 
-                        class="bg-slate-900 border border-slate-700 text-xs rounded-lg px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-cyan-500">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" id="log-bait" placeholder="Bait / Rig Used" 
-                        class="bg-slate-900 border border-slate-700 text-xs rounded-lg px-2.5 py-1.5 text-slate-100 focus:outline-none focus:border-cyan-500">
-                    <button id="add-log-btn" class="bg-emerald-600 hover:bg-emerald-500 text-xs text-white font-medium rounded-lg px-3 py-1.5 transition">
-                        + Save Catch Log
-                    </button>
-                </div>
+            <div class="flex justify-between items-center border-b border-slate-700/60 pb-2">
+                <h2 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1">
+                    🐟 Target Species & Seasonal Guide
+                </h2>
+                <span id="season-month-tag" class="text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-full font-medium">
+                    August Season
+                </span>
             </div>
+            <p class="text-[11px] text-slate-400">
+                Species presence and feeding behavior in these waters based on current seasonal patterns and water conditions:
+            </p>
 
-            <!-- Log Entries List -->
-            <div id="catch-log-list" class="space-y-2 max-h-48 overflow-y-auto pt-2 border-t border-slate-700/60">
-                <p class="text-xs text-slate-500 text-center py-2">No catches recorded yet.</p>
+            <div id="species-list-container" class="space-y-2 pt-1 max-h-64 overflow-y-auto">
+                <!-- Dynamically populated species cards -->
             </div>
         </div>
 
@@ -162,20 +174,62 @@
         let currentLon = 103.8198;
         let selectedDateStr = new Date().toISOString().split('T')[0];
 
+        // Regional Species Database mapped by month and latitude category
+        const SPECIES_DATABASE = [
+            {
+                name: "Barramundi / Asian Seabass",
+                months: [4, 5, 6, 7, 8, 9, 10],
+                abundance: "High Peak Season",
+                habitats: "Estuaries, mangroves, coastal jetties & river mouths",
+                bait: "Live prawn, live mullet, soft plastics, minnow lures",
+                color: "text-amber-400"
+            },
+            {
+                name: "Golden Snapper (Fingermark)",
+                months: [1, 2, 3, 4, 8, 9, 10, 11, 12],
+                abundance: "Moderate to High",
+                habitats: "Deep rocky reefs, wrecks, deep channels",
+                bait: "Live squid, fresh herring, bottom-weighted jigs",
+                color: "text-orange-400"
+            },
+            {
+                name: "Mangrove Jack",
+                months: [5, 6, 7, 8, 9, 10],
+                abundance: "Peak Warm Season",
+                habitats: "Mangrove roots, bridge pylons, rock walls",
+                bait: "Live baitfish, crustaceans, slow-rolled swimbaits",
+                color: "text-rose-400"
+            },
+            {
+                name: "Grouper (Estuary / Hybrid)",
+                months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                abundance: "Year-round Active",
+                habitats: "Boulders, underwater structure, reef edges",
+                bait: "Whole dead bait, live crab, deep diving lures",
+                color: "text-emerald-400"
+            },
+            {
+                name: "Queenfish & Trevally",
+                months: [3, 4, 5, 8, 9, 10],
+                abundance: "Active Feeding Run",
+                habitats: "Open coastal waters, tide rips, island points",
+                bait: "Topwater poppers, metal jigs, fast-retrieved spoons",
+                color: "text-cyan-400"
+            }
+        ];
+
         document.addEventListener('DOMContentLoaded', () => {
             const dateInput = document.getElementById('date-input');
             dateInput.value = selectedDateStr;
 
             document.getElementById('refresh-btn').addEventListener('click', () => fetchLiveData(currentLat, currentLon, selectedDateStr));
             document.getElementById('search-btn').addEventListener('click', handleLocationSearch);
-            document.getElementById('add-log-btn').addEventListener('click', saveCatchLog);
             
             dateInput.addEventListener('change', (e) => {
                 selectedDateStr = e.target.value;
                 fetchLiveData(currentLat, currentLon, selectedDateStr);
             });
 
-            renderCatchLogs();
             initApp();
         });
 
@@ -257,8 +311,9 @@
             const waveHeights = marineHourly.wave_height;
             const waterTemps = marineHourly.sea_surface_temperature;
             const targetDate = new Date(dateStr + "T12:00:00");
+            const currentHour = new Date().getHours();
             
-            // Calculate High & Low Tide/Wave points
+            // High & Low Calculations
             let maxWave = -Infinity, minWave = Infinity;
             let maxHour = 0, minHour = 0;
 
@@ -267,17 +322,31 @@
                 if (val < minWave) { minWave = val; minHour = hour; }
             });
 
+            // Current Tide & Trend
+            const currentTideHeight = waveHeights[currentHour] !== undefined ? waveHeights[currentHour] : waveHeights[12];
+            const prevTideHeight = waveHeights[Math.max(0, currentHour - 1)] || currentTideHeight;
+            const isRising = currentTideHeight >= prevTideHeight;
+
+            document.getElementById('current-tide-val').innerText = `${currentTideHeight.toFixed(2)} m`;
+            document.getElementById('tide-trend-text').innerText = isRising ? "📈 Flowing / Rising" : "📉 Ebbing / Falling";
+            document.getElementById('current-tide-phase').innerText = isRising ? "High Flow Tide" : "Ebb Tide";
+
             document.getElementById('high-tide-val').innerText = `${maxWave.toFixed(2)} m`;
             document.getElementById('high-tide-time').innerText = `Peak: ${maxHour.toString().padStart(2, '0')}:00`;
 
             document.getElementById('low-tide-val').innerText = `${minWave.toFixed(2)} m`;
             document.getElementById('low-tide-time').innerText = `Lowest: ${minHour.toString().padStart(2, '0')}:00`;
 
-            // Water Temperature
+            // Wave & Wind Dashboard
+            document.getElementById('current-wave-val').innerText = `${currentTideHeight.toFixed(2)} m`;
+            document.getElementById('max-wave-val').innerText = `Max: ${maxWave.toFixed(2)}m`;
+            document.getElementById('wave-trend-val').innerText = isRising ? "📈 Swell Rising" : "📉 Swell Moderating";
+
+            // Water Temp
             const currentWaterTemp = (waterTemps && waterTemps[12] !== undefined) ? waterTemps[12] : 28.5;
             document.getElementById('water-temp-val').innerText = `${currentWaterTemp.toFixed(1)} °C`;
 
-            // Weather & Pressure Metrics
+            // Weather Metrics
             if (wxJson && wxJson.hourly && wxJson.hourly.windspeed_10m) {
                 const midWind = wxJson.hourly.windspeed_10m[12] || 12;
                 const midDir = wxJson.hourly.winddirection_10m ? getCardinalDirection(wxJson.hourly.winddirection_10m[12]) : "N";
@@ -285,186 +354,9 @@
 
                 document.getElementById('current-wind-val').innerText = `${midWind} km/h`;
                 document.getElementById('wind-dir-val').innerText = `Dir: ${midDir}`;
-                document.getElementById('current-wave-val').innerText = `${waveHeights[12].toFixed(2)} m`;
-                document.getElementById('wave-trend-val').innerText = waveHeights[12] >= waveHeights[11] ? "📈 Rising" : "📉 Falling";
                 document.getElementById('current-press-val').innerText = `${midPress} hPa`;
                 document.getElementById('press-trend-val').innerText = midPress >= 1012 ? "Stable" : "Low Press";
             }
 
             calculateSolunar(targetDate);
-            drawTideChart(waveHeights);
-        }
-
-        function useFallbackData(wxJson, dateStr) {
-            const targetDate = new Date(dateStr + "T12:00:00");
-            const simulatedHeights = [];
-            for (let i = 0; i < 24; i++) {
-                simulatedHeights.push(1.5 + 0.8 * Math.sin((i / 12) * Math.PI * 2));
-            }
-            processData({ wave_height: simulatedHeights, sea_surface_temperature: Array(24).fill(28.5) }, wxJson, dateStr);
-            showStatus(`Forecast Model for ${dateStr}`, false);
-        }
-
-        function calculateSolunar(date) {
-            const epochDays = Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
-            const lunarAge = (epochDays - 1) % 29.53059;
-
-            let phaseStr = "Quarter Moon";
-            let stars = "★★☆☆☆";
-            let activity = "Moderate Feeding Activity";
-
-            if (lunarAge < 1.5 || lunarAge > 28) {
-                phaseStr = "New Moon (Spring Tide)";
-                stars = "★★★★★";
-                activity = "Peak Fish Feeding Activity";
-            } else if (lunarAge > 13.5 && lunarAge < 15.5) {
-                phaseStr = "Full Moon (Spring Tide)";
-                stars = "★★★★★";
-                activity = "Peak Fish Feeding Activity";
-            } else if (lunarAge > 6 && lunarAge < 8.5) {
-                phaseStr = "First Quarter (Neap Tide)";
-            } else if (lunarAge > 21 && lunarAge < 23.5) {
-                phaseStr = "Last Quarter (Neap Tide)";
-            }
-
-            document.getElementById('moon-phase-text').innerText = `Phase: ${phaseStr}`;
-            document.getElementById('solunar-rating').innerText = stars;
-            document.getElementById('solunar-status').innerText = activity;
-
-            const transitHour = (12 + (lunarAge * 0.8)) % 24;
-            const majorStart = Math.floor(transitHour).toString().padStart(2, '0') + ":00";
-            const majorEnd = Math.floor((transitHour + 2) % 24).toString().padStart(2, '0') + ":00";
-            
-            const minorStart = Math.floor((transitHour + 6) % 24).toString().padStart(2, '0') + ":00";
-            const minorEnd = Math.floor((transitHour + 7) % 24).toString().padStart(2, '0') + ":00";
-
-            document.getElementById('major-time').innerText = `${majorStart} - ${majorEnd}`;
-            document.getElementById('minor-time').innerText = `${minorStart} - ${minorEnd}`;
-        }
-
-        function drawTideChart(points) {
-            const canvas = document.getElementById('tideCanvas');
-            const ctx = canvas.getContext('2d');
-            const width = canvas.width;
-            const height = canvas.height;
-            ctx.clearRect(0, 0, width, height);
-
-            if (!points || points.length === 0) return;
-
-            const min = Math.min(...points);
-            const max = Math.max(...points);
-            const range = (max - min) || 1;
-
-            ctx.strokeStyle = '#334155';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(0, height / 2);
-            ctx.lineTo(width, height / 2);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.strokeStyle = '#22d3ee';
-            ctx.lineWidth = 2.5;
-
-            const step = width / (points.length - 1);
-            for (let i = 0; i < points.length; i++) {
-                const x = i * step;
-                const y = height - (((points[i] - min) / range) * (height - 24) + 12);
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-
-            const midX = 12 * step;
-            const midY = height - (((points[12] - min) / range) * (height - 24) + 12);
-            ctx.fillStyle = '#38bdf8';
-            ctx.beginPath();
-            ctx.arc(midX, midY, 5, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        /* LOCAL CATCH LOG SYSTEM */
-        function saveCatchLog() {
-            const species = document.getElementById('log-species').value.trim();
-            const size = document.getElementById('log-size').value.trim();
-            const bait = document.getElementById('log-bait').value.trim();
-
-            if (!species) {
-                alert("Please enter a fish species.");
-                return;
-            }
-
-            const newLog = {
-                id: Date.now(),
-                date: selectedDateStr,
-                species,
-                size: size || 'Unspecified',
-                bait: bait || 'N/A',
-                location: document.getElementById('location-text').innerText
-            };
-
-            const logs = JSON.parse(localStorage.getItem('fishing_catch_logs') || '[]');
-            logs.unshift(newLog);
-            localStorage.setItem('fishing_catch_logs', JSON.stringify(logs));
-
-            document.getElementById('log-species').value = '';
-            document.getElementById('log-size').value = '';
-            document.getElementById('log-bait').value = '';
-
-            renderCatchLogs();
-        }
-
-        function deleteCatchLog(id) {
-            let logs = JSON.parse(localStorage.getItem('fishing_catch_logs') || '[]');
-            logs = logs.filter(log => log.id !== id);
-            localStorage.setItem('fishing_catch_logs', JSON.stringify(logs));
-            renderCatchLogs();
-        }
-
-        function renderCatchLogs() {
-            const logs = JSON.parse(localStorage.getItem('fishing_catch_logs') || '[]');
-            const listEl = document.getElementById('catch-log-list');
-            const countEl = document.getElementById('log-count');
-
-            countEl.innerText = `${logs.length} Entries`;
-
-            if (logs.length === 0) {
-                listEl.innerHTML = '<p class="text-xs text-slate-500 text-center py-2">No catches recorded yet.</p>';
-                return;
-            }
-
-            listEl.innerHTML = logs.map(log => `
-                <div class="bg-slate-900 border border-slate-700/80 p-2.5 rounded-lg flex justify-between items-start text-xs">
-                    <div class="space-y-0.5">
-                        <div class="font-bold text-cyan-300 flex items-center gap-1.5">
-                            🐟 ${log.species} <span class="text-slate-400 font-normal">(${log.size})</span>
-                        </div>
-                        <div class="text-[10px] text-slate-400">
-                            🪱 Bait: <span class="text-slate-300">${log.bait}</span>
-                        </div>
-                        <div class="text-[9px] text-slate-500">
-                            📅 ${log.date} | 📍 ${log.location}
-                        </div>
-                    </div>
-                    <button onclick="deleteCatchLog(${log.id})" class="text-slate-500 hover:text-rose-400 p-1 text-xs">
-                        ✕
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function getCardinalDirection(angle) {
-            const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
-            return directions[Math.round(angle / 45) % 8];
-        }
-
-        function showStatus(text, isSuccess = false) {
-            const badge = document.getElementById('status-badge');
-            badge.innerText = text;
-            badge.className = isSuccess 
-                ? "text-xs px-3 py-1.5 rounded-full text-center font-medium bg-emerald-950/60 text-emerald-300 border border-emerald-800"
-                : "text-xs px-3 py-1.5 rounded-full text-center font-medium bg-cyan-900/50 text-cyan-300 border border-cyan-700";
-        }
-    </script>
-</body>
-</html>
+            drawTideChart(waveHeigh
