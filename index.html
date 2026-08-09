@@ -174,7 +174,6 @@
         let currentLon = 103.8198;
         let selectedDateStr = new Date().toISOString().split('T')[0];
 
-        // Regional Species Database mapped by month and latitude category
         const SPECIES_DATABASE = [
             {
                 name: "Barramundi / Asian Seabass",
@@ -313,7 +312,6 @@
             const targetDate = new Date(dateStr + "T12:00:00");
             const currentHour = new Date().getHours();
             
-            // High & Low Calculations
             let maxWave = -Infinity, minWave = Infinity;
             let maxHour = 0, minHour = 0;
 
@@ -322,7 +320,6 @@
                 if (val < minWave) { minWave = val; minHour = hour; }
             });
 
-            // Current Tide & Trend
             const currentTideHeight = waveHeights[currentHour] !== undefined ? waveHeights[currentHour] : waveHeights[12];
             const prevTideHeight = waveHeights[Math.max(0, currentHour - 1)] || currentTideHeight;
             const isRising = currentTideHeight >= prevTideHeight;
@@ -337,16 +334,13 @@
             document.getElementById('low-tide-val').innerText = `${minWave.toFixed(2)} m`;
             document.getElementById('low-tide-time').innerText = `Lowest: ${minHour.toString().padStart(2, '0')}:00`;
 
-            // Wave & Wind Dashboard
             document.getElementById('current-wave-val').innerText = `${currentTideHeight.toFixed(2)} m`;
             document.getElementById('max-wave-val').innerText = `Max: ${maxWave.toFixed(2)}m`;
             document.getElementById('wave-trend-val').innerText = isRising ? "📈 Swell Rising" : "📉 Swell Moderating";
 
-            // Water Temp
             const currentWaterTemp = (waterTemps && waterTemps[12] !== undefined) ? waterTemps[12] : 28.5;
             document.getElementById('water-temp-val').innerText = `${currentWaterTemp.toFixed(1)} °C`;
 
-            // Weather Metrics
             if (wxJson && wxJson.hourly && wxJson.hourly.windspeed_10m) {
                 const midWind = wxJson.hourly.windspeed_10m[12] || 12;
                 const midDir = wxJson.hourly.winddirection_10m ? getCardinalDirection(wxJson.hourly.winddirection_10m[12]) : "N";
@@ -359,4 +353,142 @@
             }
 
             calculateSolunar(targetDate);
-            drawTideChart(waveHeigh
+            drawTideChart(waveHeights);
+            updateSeasonalSpeciesGuide(targetDate);
+        }
+
+        function useFallbackData(wxJson, dateStr) {
+            const targetDate = new Date(dateStr + "T12:00:00");
+            const simulatedHeights = [];
+            for (let i = 0; i < 24; i++) {
+                simulatedHeights.push(1.5 + 0.8 * Math.sin((i / 12) * Math.PI * 2));
+            }
+            processData({ wave_height: simulatedHeights, sea_surface_temperature: Array(24).fill(28.5) }, wxJson, dateStr);
+            showStatus(`Forecast Model for ${dateStr}`, false);
+        }
+
+        function calculateSolunar(date) {
+            const epochDays = Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
+            const lunarAge = (epochDays - 1) % 29.53059;
+
+            let phaseStr = "Quarter Moon";
+            let stars = "★★☆☆☆";
+            let activity = "Moderate Feeding Activity";
+
+            if (lunarAge < 1.5 || lunarAge > 28) {
+                phaseStr = "New Moon (Spring Tide)";
+                stars = "★★★★★";
+                activity = "Peak Fish Feeding Activity";
+            } else if (lunarAge > 13.5 && lunarAge < 15.5) {
+                phaseStr = "Full Moon (Spring Tide)";
+                stars = "★★★★★";
+                activity = "Peak Fish Feeding Activity";
+            } else if (lunarAge > 6 && lunarAge < 8.5) {
+                phaseStr = "First Quarter (Neap Tide)";
+            } else if (lunarAge > 21 && lunarAge < 23.5) {
+                phaseStr = "Last Quarter (Neap Tide)";
+            }
+
+            document.getElementById('moon-phase-text').innerText = `Phase: ${phaseStr}`;
+            document.getElementById('solunar-rating').innerText = stars;
+            document.getElementById('solunar-status').innerText = activity;
+
+            const transitHour = (12 + (lunarAge * 0.8)) % 24;
+            const majorStart = Math.floor(transitHour).toString().padStart(2, '0') + ":00";
+            const majorEnd = Math.floor((transitHour + 2) % 24).toString().padStart(2, '0') + ":00";
+            
+            const minorStart = Math.floor((transitHour + 6) % 24).toString().padStart(2, '0') + ":00";
+            const minorEnd = Math.floor((transitHour + 7) % 24).toString().padStart(2, '0') + ":00";
+
+            document.getElementById('major-time').innerText = `${majorStart} - ${majorEnd}`;
+            document.getElementById('minor-time').innerText = `${minorStart} - ${minorEnd}`;
+        }
+
+        function updateSeasonalSpeciesGuide(date) {
+            const month = date.getMonth() + 1;
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            
+            document.getElementById('season-month-tag').innerText = `${monthNames[month - 1]} Season`;
+
+            const speciesListEl = document.getElementById('species-list-container');
+            const activeSpecies = SPECIES_DATABASE.filter(s => s.months.includes(month));
+
+            if (activeSpecies.length === 0) {
+                speciesListEl.innerHTML = '<p class="text-xs text-slate-500 text-center py-2">No specific seasonal species data available for this month.</p>';
+                return;
+            }
+
+            speciesListEl.innerHTML = activeSpecies.map(sp => `
+                <div class="bg-slate-900 border border-slate-700/80 p-3 rounded-lg space-y-1 text-xs">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold ${sp.color}">${sp.name}</span>
+                        <span class="text-[9px] bg-slate-800 text-cyan-300 border border-slate-700 px-2 py-0.5 rounded-full font-medium">
+                            ${sp.abundance}
+                        </span>
+                    </div>
+                    <div class="text-[10px] text-slate-300">
+                        📍 <span class="text-slate-400">Habitat:</span> ${sp.habitats}
+                    </div>
+                    <div class="text-[10px] text-slate-300">
+                        🪱 <span class="text-slate-400">Recommended Bait / Method:</span> ${sp.bait}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function drawTideChart(points) {
+            const canvas = document.getElementById('tideCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            ctx.clearRect(0, 0, width, height);
+
+            if (!points || points.length === 0) return;
+
+            const min = Math.min(...points);
+            const max = Math.max(...points);
+            const range = (max - min) || 1;
+
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, height / 2);
+            ctx.lineTo(width, height / 2);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#22d3ee';
+            ctx.lineWidth = 2.5;
+
+            const step = width / (points.length - 1);
+            for (let i = 0; i < points.length; i++) {
+                const x = i * step;
+                const y = height - (((points[i] - min) / range) * (height - 24) + 12);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            const midX = 12 * step;
+            const midY = height - (((points[12] - min) / range) * (height - 24) + 12);
+            ctx.fillStyle = '#38bdf8';
+            ctx.beginPath();
+            ctx.arc(midX, midY, 5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function getCardinalDirection(angle) {
+            const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+            return directions[Math.round(angle / 45) % 8];
+        }
+
+        function showStatus(text, isSuccess = false) {
+            const badge = document.getElementById('status-badge');
+            badge.innerText = text;
+            badge.className = isSuccess 
+                ? "text-xs px-3 py-1.5 rounded-full text-center font-medium bg-emerald-950/60 text-emerald-300 border border-emerald-800"
+                : "text-xs px-3 py-1.5 rounded-full text-center font-medium bg-cyan-900/50 text-cyan-300 border border-cyan-700";
+        }
+    </script>
+</body>
+</html>
