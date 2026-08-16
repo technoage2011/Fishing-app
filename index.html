@@ -320,6 +320,7 @@
                 activeWaterName = spot.name;
                 activeLocationId = spot.id;
                 updateLocationLabel();
+                loadCatchReports(activeWaterName);
                 fetchLiveData(currentLat, currentLon, selectedDateStr);
             }
         }
@@ -339,6 +340,7 @@
             activeLocationId = selected.id;
 
             updateLocationLabel();
+            loadCatchReports(activeWaterName);
             fetchLiveData(currentLat, currentLon, selectedDateStr);
         }
 
