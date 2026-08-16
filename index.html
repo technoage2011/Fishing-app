@@ -142,6 +142,40 @@
                 </div>
             </div>
         </div>
+<!-- Nautical Insights & Safety Section -->
+<div id="nautical-insights-section" class="bg-slate-800/80 border border-slate-700 p-3.5 rounded-xl space-y-3 mt-4">
+  <div class="border-b border-slate-700/60 pb-2 flex justify-between items-center">
+    <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+      ⚓ Angler & Marine Safety Insights
+    </h2>
+    <span id="safety-badge" class="text-[10px] px-2 py-0.5 rounded font-bold uppercase bg-emerald-900/80 text-emerald-300 border border-emerald-700">Good Conditions</span>
+  </div>
+
+  <div class="space-y-2 text-xs">
+    <!-- Vessel Safety -->
+    <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/50">
+      <p class="font-semibold text-slate-200 text-[11px] mb-0.5">🚤 Vessel Suitability & Seasafety</p>
+      <p id="insight-vessel" class="text-slate-300 text-[11px] leading-relaxed">Analyzing current swell and sea state...</p>
+    </div>
+
+    <!-- Weather & Pressure Advisory -->
+    <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/50">
+      <p class="font-semibold text-slate-200 text-[11px] mb-0.5">⚠️ Weather & Barometric Trend</p>
+      <p id="insight-weather" class="text-slate-300 text-[11px] leading-relaxed">Evaluating atmospheric pressure and wind shift risks...</p>
+    </div>
+
+    <!-- Tactical Bait & Rig Recommendation -->
+    <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/50">
+      <p class="font-semibold text-slate-200 text-[11px] mb-0.5">🎣 Recommended Tactical Rigging & Baits</p>
+      <p id="insight-bait" class="text-slate-300 text-[11px] leading-relaxed">Determining optimal terminal tackle for water temp and currents...</p>
+    </div>
+  </div>
+
+  <!-- Mandatory Legal / Safety Disclaimer -->
+  <p class="text-[9px] text-slate-500 italic mt-2 border-t border-slate-700/40 pt-1.5">
+    ⚖️ <strong>Disclaimer:</strong> Marine insights are generated based on real-time atmospheric data model forecasts. Sea conditions change rapidly offshore. Always verify with official local maritime authorities (e.g., MPA/MET) before setting sail. Captains retain sole responsibility for vessel safety.
+  </p>
+</div>
 
         <!-- Solunar Feeding Window -->
         <div class="bg-gradient-to-br from-indigo-950/80 to-slate-800 border border-indigo-800/50 p-3.5 rounded-xl">
@@ -204,6 +238,60 @@
       <a href="https://www.google.com/search?q=${encodedLoc}" target="_blank" class="inline-block text-[11px] text-cyan-400 hover:underline pt-1">Search Web Catch Reports &rarr;</a>
     </div>
   `;
+}
+        
+
+function updateNauticalInsights(swellMeters, windKmh, barometerHpa, waterTempC) {
+  const vesselEl = document.getElementById('insight-vessel');
+  const weatherEl = document.getElementById('insight-weather');
+  const baitEl = document.getElementById('insight-bait');
+  const badgeEl = document.getElementById('safety-badge');
+
+  if (!vesselEl || !weatherEl || !baitEl) return;
+
+  // 1. Vessel & Swell Suitability Analysis
+  if (swellMeters < 0.5) {
+    vesselEl.innerHTML = `Swell is low (<strong>${swellMeters}m</strong>). Suitable for small craft (14ft+) and skiffs. Calm surface conditions make offshore drifting comfortable.`;
+    badgeEl.textContent = "Low Swell / Safe";
+    badgeEl.className = "text-[10px] px-2 py-0.5 rounded font-bold uppercase bg-emerald-900/80 text-emerald-300 border border-emerald-700";
+  } else if (swellMeters >= 0.5 && swellMeters < 1.2) {
+    vesselEl.innerHTML = `Moderate chop (<strong>${swellMeters}m</strong> swell). Recommended for vessels <strong>20ft+</strong> with deep-V hulls. Small skiffs should stay close inshore.`;
+    badgeEl.textContent = "Moderate Chop";
+    badgeEl.className = "text-[10px] px-2 py-0.5 rounded font-bold uppercase bg-amber-900/80 text-amber-300 border border-amber-700";
+  } else if (swellMeters >= 1.2 && swellMeters < 2.0) {
+    vesselEl.innerHTML = `Rough seas (<strong>${swellMeters}m</strong> swell). Caution advised for small craft under <strong>28ft</strong>. Anchor lines need extra slack to prevent pulling.`;
+    badgeEl.textContent = "Caution Advised";
+    badgeEl.className = "text-[10px] px-2 py-0.5 rounded font-bold uppercase bg-orange-900/80 text-orange-300 border border-orange-700";
+  } else {
+    vesselEl.innerHTML = `<strong>HEAVY SEAS (${swellMeters}m swell)!</strong> Unsafe for small craft under 35ft. Strong risk of capsize or engine strain. Stay in port.`;
+    badgeEl.textContent = "⚠️ High Risk";
+    badgeEl.className = "text-[10px] px-2 py-0.5 rounded font-bold uppercase bg-red-900/80 text-red-300 border border-red-700";
+  }
+
+  // 2. Barometer & Weather Trend Warning
+  if (barometerHpa < 1008) {
+    weatherEl.innerHTML = `Barometer is low (<strong>${barometerHpa} hPa</strong>). High probability of squalls, sudden rainstorms, or wind shifts. Keep radio on Channel 16.`;
+  } else if (barometerHpa >= 1008 && barometerHpa <= 1014) {
+    weatherEl.innerHTML = `Stable pressure (<strong>${barometerHpa} hPa</strong>). Expect standard local coastal breezes (${windKmh} km/h). Low storm risk over open water.`;
+  } else {
+    weatherEl.innerHTML = `High pressure system (<strong>${barometerHpa} hPa</strong>). Clear skies and calm atmospheric conditions expected over the fishing grounds.`;
+  }
+
+  // 3. Tactical Rigging & Bait Advice based on Water Temp & Wind
+  let baitAdvice = "";
+  if (waterTempC >= 28) {
+    baitAdvice += `Warm surface waters (<strong>${waterTempC}°C</strong>). Pelagic fish are active in top layers. Use live bait (Tamban/Kembung) or high-speed trolling lures. `;
+  } else {
+    baitAdvice += `Cooler water (<strong>${waterTempC}°C</strong>). Fish will hold deeper around submerged structures. Deep vertical jigs or bottom-rigged squid are optimal. `;
+  }
+
+  if (windKmh > 18) {
+    baitAdvice += `Wind speed is <strong>${windKmh} km/h</strong>: Add heavier sinkers (8oz+) to maintain bottom contact against fast drift.`;
+  } else {
+    baitAdvice += `Light winds (<strong>${windKmh} km/h</strong>): Light fluorocarbon leaders (20-40lb) work best due to high water clarity.`;
+  }
+
+  baitEl.innerHTML = baitAdvice;
 }
 
         // Regional Species Database mapped by Location Keys
@@ -428,6 +516,7 @@
                 document.getElementById('wind-dir-val').innerText = `Dir: ${midDir}`;
                 document.getElementById('current-press-val').innerText = `${midPress} hPa`;
                 document.getElementById('press-trend-val').innerText = midPress >= 1012 ? "Stable" : "Low Press";
+                updateNauticalInsights(maxWave, midWind, midPress, validTemp);
             }
 
             renderSpeciesGuide(targetDate);
